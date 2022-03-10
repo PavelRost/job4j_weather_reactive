@@ -44,10 +44,11 @@ public class WeatherService {
     }
 
     public Flux<Weather> getCityGreatThen(Integer temperature) {
-        Collection<Weather> rsl = weathers.values().stream()
+        return Flux.fromIterable(
+                weathers.values().stream()
                 .filter(weather -> weather.getTemperature() > temperature)
-                .collect(Collectors.toList());
-        return Flux.fromIterable(rsl);
+                .collect(Collectors.toList())
+        );
     }
 
 }
