@@ -22,7 +22,7 @@ public class WeatherService {
         weathers.put(3, new Weather(3, "Bryansk", 17));
         weathers.put(4, new Weather(4, "Smolensk", 15));
         weathers.put(5, new Weather(5, "Kiev", 21));
-        weathers.put(6, new Weather(6, "Minsk", 30));
+        weathers.put(6, new Weather(6, "Minsk", 35));
     }
 
     public Mono<Weather> findById(Integer id) {
@@ -34,13 +34,9 @@ public class WeatherService {
     }
 
     public Mono<Weather> getCityMaxTemp() {
-        int rsl = weathers.values().stream()
-                .map(Weather::getTemperature)
-                .max(Comparator.naturalOrder()).get();
-        Weather weather = weathers.values().stream()
-                .filter(weather1 -> weather1.getTemperature() == rsl)
-                .findFirst().get();
-        return Mono.just(weathers.get(weather.getId()));
+        return Mono.just(weathers.values().stream()
+                .max(Comparator.comparingInt(Weather::getTemperature))
+                .get());
     }
 
     public Flux<Weather> getCityGreatThen(Integer temperature) {
